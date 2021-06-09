@@ -1,7 +1,5 @@
-import 'dart:ffi';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:risecx_range_of_motion/services/angles.service.dart';
 
 class RenderData extends StatefulWidget {
   final List<dynamic> data;
@@ -21,11 +19,13 @@ class RenderData extends StatefulWidget {
 }
 
 class _RenderDataState extends State<RenderData> {
-  late Map<String, List<double>> inputArr;
+  AnglesService anglesService = new AnglesService();
 
+  late Map<String, List<double>> inputArr;
   String excercise = 'squat';
   double upperRange = 300;
   double lowerRange = 500;
+  double rightKneeAngle = 0;
   late bool midCount, isCorrectPosture;
   late int _counter;
   late Color correctColor;
@@ -152,17 +152,12 @@ class _RenderDataState extends State<RenderData> {
     }
   } */
 
-  double _getAngle(Map<String, List<double>> poses) {
-    double angle = 0.0;
+  _getAngle(Map<String, List<double>> poses) {
     try {
-      angle = 360 -
-          atan2(poses['rightAnkle']![1] - poses['rightKnee']![1],
-              poses['rightAnkle']![0] - poses['rightKnee']![0]) -
-          atan2(poses['rightHip']![1] - poses['rightKnee']![1],
-                  poses['rightHip']![0] - poses['rightKnee']![0]) *
-              (180 / pi);
-      ;
-      return angle;
+      Map<String, double> angle = anglesService.getAngle(poses, JOINTS.KNEE);
+      setState(() {
+        rightKneeAngle = angle['right']!;
+      });
     } catch (e) {
       throw e;
     }
@@ -348,7 +343,7 @@ class _RenderDataState extends State<RenderData> {
           ],
         ),
         Stack(children: _renderKeypoints()),
-        /*  Align(
+        Align(
           alignment: Alignment.bottomCenter,
           child: Container(
             height: 50,
@@ -362,13 +357,13 @@ class _RenderDataState extends State<RenderData> {
             child: Column(
               children: [
                 Text(
-                  '$whatToDo\nArm Presses: ${_counter.toString()}',
+                  'Right Knee Angle: ${rightKneeAngle.toString()}',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
           ),
-        ), */
+        ),
       ],
     );
   }
