@@ -22,19 +22,13 @@ class _RenderDataState extends State<RenderData> {
   AnglesService anglesService = new AnglesService();
 
   late Map<String, List<double>> inputArr;
-  String excercise = 'squat';
-  double upperRange = 300;
-  double lowerRange = 500;
+
   double rightKneeAngle = 0;
-  late bool midCount, isCorrectPosture;
-  late int _counter;
   late Color correctColor;
   late double shoulderLY;
   late double shoulderRY;
   late double kneeRY;
   late double kneeLY;
-  late bool squatUp;
-  String whatToDo = 'Finding Posture';
 
   var leftEyePos = Vector(0, 0);
   var rightEyePos = Vector(0, 0);
@@ -54,119 +48,23 @@ class _RenderDataState extends State<RenderData> {
   @override
   void initState() {
     inputArr = new Map();
-    midCount = false;
-    isCorrectPosture = false;
-    _counter = 0;
     correctColor = Colors.red;
     shoulderLY = 0;
     shoulderRY = 0;
     kneeRY = 0;
     kneeLY = 0;
-    squatUp = true;
     super.initState();
   }
-/* 
-  bool _postureAccordingToExercise(Map<String, List<double>> poses) {
-    try {
-      
-      setState(() {
-        shoulderLY = poses['leftShoulder']![1];
-        shoulderRY = poses['rightShoulder']![1];
-        kneeLY = poses['leftKnee']![1];
-        kneeRY = poses['rightKnee']![1];
-      });
-      if (excercise == 'squat') {
-        if (squatUp) {
-          return poses['leftShoulder']![1] < 320 &&
-              poses['leftShoulder']![1] > 280 &&
-              poses['rightShoulder']![1] < 320 &&
-              poses['rightShoulder']![1] > 280 &&
-              poses['rightKnee']![1] > 570 &&
-              poses['leftKnee']![1] > 570;
-        } else {
-          return poses['leftShoulder']![1] > 475 &&
-              poses['rightShoulder']![1] > 475;
-        }
-      }
-    } catch (e) {
-      throw e;
-    }
-  } */
-
-/*   _checkCorrectPosture(Map<String, List<double>> poses) {
-    if (_postureAccordingToExercise(poses)) {
-      if (!isCorrectPosture) {
-        setState(() {
-          isCorrectPosture = true;
-          correctColor = Colors.green;
-        });
-      }
-    } else {
-      if (isCorrectPosture) {
-        setState(() {
-          isCorrectPosture = false;
-          correctColor = Colors.red;
-        });
-      }
-    }
-  } */
-
-  /* Future<void> _countingLogic(Map<String, List<double>> poses) async {
-    if (poses != null) {
-      _checkCorrectPosture(poses);
-
-      if (isCorrectPosture && squatUp && midCount == false) {
-        //in correct initial posture
-        setState(() {
-          whatToDo = 'Squat Down';
-          //correctColor = Colors.green;
-        });
-        squatUp = !squatUp;
-        isCorrectPosture = false;
-      }
-
-      //lowered all the way
-      if (isCorrectPosture && !squatUp && midCount == false) {
-        midCount = true;
-        isCorrectPosture = false;
-        squatUp = !squatUp;
-        setState(() {
-          whatToDo = 'Go Up';
-          //correctColor = Colors.green;
-        });
-      }
-
-      //back up
-      if (midCount &&
-          poses['leftShoulder'][1] < 320 &&
-          poses['leftShoulder'][1] > 280 &&
-          poses['rightShoulder'][1] < 320 &&
-          poses['rightShoulder'][1] > 280) {
-        incrementCounter();
-        midCount = false;
-        squatUp = !squatUp;
-        setState(() {
-          //whatToDo = 'Go Up';
-        });
-      }
-    }
-  } */
 
   _getAngle(Map<String, List<double>> poses) {
     try {
-      Map<String, double> angle = anglesService.getAngle(poses, JOINTS.KNEE);
+      Map<String, double> angle = anglesService.getAngle(poses, JOINTS.ELBOW);
       setState(() {
         rightKneeAngle = angle['right']!;
       });
     } catch (e) {
       throw e;
     }
-  }
-
-  void incrementCounter() {
-    setState(() {
-      _counter++;
-    });
   }
 
   @override
@@ -357,7 +255,7 @@ class _RenderDataState extends State<RenderData> {
             child: Column(
               children: [
                 Text(
-                  'Right Knee Angle: ${rightKneeAngle.toString()}',
+                  'Right Elbow Angle: ${rightKneeAngle.toString()}',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],

@@ -52,6 +52,9 @@ class AnglesService {
       if (joints.index == JOINTS.TRUNK_LEAN.index) {
         return _getTrunkLean(knees, hips, shoulders);
       }
+      if (joints.index == JOINTS.ELBOW.index) {
+        return _getElbowsFlexion(wrists, elbows, shoulders);
+      }
     } catch (e) {
       throw e;
     }
@@ -59,10 +62,30 @@ class AnglesService {
 
   Map<String, double> _getKneeFlexion(ankles, knees, hips) {
     Function getResultBySide = (String side) =>
-        (atan2(ankles[side]['y'] - knees[side]['y'],
-                ankles[side]['x'] - knees[side]['x']) -
+        (atan2(
             atan2(hips[side]['y'] - knees[side]['y'],
-                hips[side]['x'] - knees[side]['x'])) *
+                    hips[side]['x'] - knees[side]['x']) -
+                ankles[side]['y'] -
+                knees[side]['y'],
+            ankles[side]['x'] - knees[side]['x'])) *
+        (180 / pi);
+
+    try {
+      return {
+        'left': getResultBySide('left'),
+        'right': getResultBySide('right')
+      };
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Map<String, double> _getElbowsFlexion(wrists, elbows, shoulders) {
+    Function getResultBySide = (String side) =>
+        (atan2(shoulders[side]['y'] - elbows[side]['y'],
+                shoulders[side]['x'] - elbows[side]['x']) -
+            atan2(wrists[side]['y'] - elbows[side]['y'],
+                wrists[side]['x'] - elbows[side]['x'])) *
         (180 / pi);
 
     try {

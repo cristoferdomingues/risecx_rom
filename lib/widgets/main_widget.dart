@@ -1,14 +1,14 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:risecx_range_of_motion/widgets/bndbox_widget.dart';
+import 'package:risecx_range_of_motion/services/angles.service.dart';
 import 'package:risecx_range_of_motion/widgets/camera_widget.dart';
 import 'package:risecx_range_of_motion/widgets/sticker.dart';
 import 'package:tflite/tflite.dart';
 import 'dart:math' as math;
 
 class MainWidget extends StatefulWidget {
-  MainWidget({Key? key}) : super(key: key);
+  MainWidget({Key? key, JOINTS? joint}) : super(key: key);
 
   @override
   _MainWidgetState createState() => _MainWidgetState();

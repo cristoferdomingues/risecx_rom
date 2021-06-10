@@ -48,7 +48,7 @@ class _CameraState extends State<Camera> {
               imageHeight: img.height,
               imageWidth: img.width,
               numResults: 1,
-              rotation: -90,
+              rotation: -180,
               threshold: 0.2,
               nmsRadius: 10,
             ).then((recognitions) {
